@@ -1,0 +1,13 @@
+package com.company.spaceflights;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpaceFlightsApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpaceFlightsApplication.class, args);
+    }
+
+}
