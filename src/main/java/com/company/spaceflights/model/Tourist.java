@@ -1,53 +1,62 @@
 package com.company.spaceflights.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 public class Tourist {
 
-/*
-            1. Tourist
-    a. Name
-    b. Surname
-    c. Gender
-    d. Country
-    e. Notes
-    f. Date of birth
-    g. List of flights*/
 
-    @Id
+/*    @ManyToOne
+    Flight flight;*/
+
+    @ManyToMany
+    @JoinTable(name = "flight_tourist",
+            joinColumns = @JoinColumn(name = "tourist_id"),
+            inverseJoinColumns = @JoinColumn(name = "flight_id"))
+    Set<Flight> flights;
+
+
+/*@ManyToMany
+@JoinTable(
+        name = "course_like",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id"))
+Set<Course> likedCourses;*/
+
+
+    @Id // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue
-    private int id;
+    private Long id;
     private String name;
     private String surname;
     private String gender; //todo change to enum?
     private String Country;
     private String notes;
     private java.sql.Date birthday;
-
-    @ManyToOne
     //  @JoinColumn(name = "flight_id");
-            Flight flight;
 
     public Tourist() {
     }
 
-    public Tourist(String name,String surname,Flight flight) {
+    public Tourist(String name, String surname, Flight flight) {
         this.name = name;
         this.surname = surname;
-        this.flight=flight;
+        this.flights.add(flight);
     }
 
 
-    public int getId() {
+    public Tourist(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -99,25 +108,29 @@ public class Tourist {
         this.birthday = birthday;
     }
 
-    public Flight getFlight() {
-        return flight;
+    public Set<Flight> getFlights() {
+        return flights;
+    }
+
+    public void setFlights(Set<Flight> flights) {
+        this.flights = flights;
     }
 
     public void setFlight(Flight flight) {
-        this.flight = flight;
+        this.flights.add(flight);
     }
 
     @Override
     public String toString() {
         return "Tourist{" +
-                "id=" + id +
+                "flights=" + flights +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender='" + gender + '\'' +
                 ", Country='" + Country + '\'' +
                 ", notes='" + notes + '\'' +
                 ", birthday=" + birthday +
-                ", flight=" + flight +
                 '}';
     }
 }
